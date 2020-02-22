@@ -517,8 +517,20 @@ namespace Xms.Sdk.Data
         private string MakeCondition(Schema.Domain.Entity entityMetaData, string entityAliaName, ConditionExpression conditionNode)
         {
             string condition = string.Empty;
-            string attrName = (conditionNode.AttributeName.IndexOf('.') < 0 ? PocoHelper.WrapName(entityAliaName) + "." : "") + PocoHelper.WrapName(conditionNode.AttributeName);
-            //var attrMeta = AttributeList.Exists(n => n.Name.IsCaseInsensitiveEqual(attrName) && n.EntityName.IsCaseInsensitiveEqual(entityMetaData.Name));
+           // string attrName = (conditionNode.AttributeName.IndexOf('.') < 0 ? PocoHelper.WrapName(entityAliaName) + "." : "") + PocoHelper.WrapName(conditionNode.AttributeName);
+           
+            //下方为修改后的代码
+             string  attrName = string.Empty;
+
+           if (conditionNode.AttributeName.IndexOf('.') < 0)
+            {
+               attrName = PocoHelper.WrapName(entityAliaName) + "." + PocoHelper.WrapName(conditionNode.AttributeName);
+             }
+            else {
+                attrName = conditionNode.AttributeName;
+           }
+           
+           //var attrMeta = AttributeList.Exists(n => n.Name.IsCaseInsensitiveEqual(attrName) && n.EntityName.IsCaseInsensitiveEqual(entityMetaData.Name));
             string value = (conditionNode.Values != null) ? string.Join(",", conditionNode.Values).TrimSafe() : string.Empty;
             string parameter = "@" + Parameters.Args.Count;
 
